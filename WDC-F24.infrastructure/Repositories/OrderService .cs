@@ -83,16 +83,17 @@ namespace WDC_F24.infrastructure.Repositories
                         UnitPrice = i.UnitPrice
                     }).ToList()
                 };
-
-                await _context.Orders.AddAsync(order);
+          
+                 await _context.Orders.AddAsync(order);
                 await _context.SaveChangesAsync();
-
+                
                 _publisher.Publish("order-created", new
                 {
                     OrderId = order.Id,
                     UserId = userId,
-                    Items = order.Items
-                });
+                    Items = order.Items,
+                    Message = $"Order {order.Id} was created successfully"
+                } );
 
                 return GeneralResponse.Ok("Order created", order);
             }
@@ -121,7 +122,7 @@ namespace WDC_F24.infrastructure.Repositories
                 _context.Orders.Remove(order);
                 await _context.SaveChangesAsync();
 
-                _publisher.Publish("order-deleted", new { order.Id });
+                _publisher.Publish("order-deleted", new { order.Id , Message = $"Order {order.Id} was deleted successfully" }  );
 
                 return GeneralResponse.Ok("Order deleted");
             }
@@ -146,7 +147,7 @@ namespace WDC_F24.infrastructure.Repositories
                 order.UpdatedAt = DateTime.UtcNow;
                 await _context.SaveChangesAsync();
 
-                _publisher.Publish("order-status-updated", new { order.Id, status });
+                _publisher.Publish("order-status-updated", new { order.Id, status  , Message = $"Order {order.Id} was updated successfully" });
 
                 return GeneralResponse.Ok("Order status updated");
             }
