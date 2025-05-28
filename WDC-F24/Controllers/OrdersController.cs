@@ -13,12 +13,12 @@ using WDC_F24.UtilityServices;
 
 [ApiController]
 [Route("[controller]")]
-public class OrderController : ControllerBase
+public class OrdersController : ControllerBase
 {
     private readonly IOrderService _orderService;
     private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public OrderController(IOrderService orderService, IHttpContextAccessor httpContextAccessor)
+    public OrdersController(IOrderService orderService, IHttpContextAccessor httpContextAccessor)
     {
         _orderService = orderService;
         _httpContextAccessor = httpContextAccessor;
